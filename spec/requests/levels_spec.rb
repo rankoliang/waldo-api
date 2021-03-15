@@ -32,7 +32,7 @@ RSpec.describe 'Levels', type: :request do
         data = JSON.parse(response.body)
         level = data['level']
 
-        expect(level).to include('title', 'image_src')
+        expect(level).to include('title')
       end
     end
 

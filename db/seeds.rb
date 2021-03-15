@@ -1,7 +1,6 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+department_store = Level.create({ title: 'Department Store' })
+department_store.image.attach(
+  io: File.open(Rails.root.join('public/images/department-store.jpg')),
+  filename: 'department_store.jpg',
+  content_type: 'image/jpeg'
+)

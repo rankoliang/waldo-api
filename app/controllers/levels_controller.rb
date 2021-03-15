@@ -7,7 +7,7 @@ class LevelsController < ApplicationController
   end
 
   def show
-    render json: { level: @level }
+    render json: @level
   end
 
   def find_level
