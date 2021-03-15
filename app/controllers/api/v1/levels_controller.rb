@@ -1,5 +1,6 @@
 class Api::V1::LevelsController < ApplicationController
   before_action :find_level, except: %i[index]
+
   def index
     @levels = Level.all
 
@@ -9,6 +10,8 @@ class Api::V1::LevelsController < ApplicationController
   def show
     render json: @level.as_json(root: true)
   end
+
+  private
 
   def find_level
     @level = Level.find(params[:id])

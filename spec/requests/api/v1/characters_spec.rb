@@ -39,9 +39,9 @@ RSpec.describe 'Api::V1::Characters', type: :request do
 
     context 'when the level is not found' do
       context 'when the character is found' do
-        it 'returns http success' do
+        it 'returns http not found' do
           get api_v1_level_search_path('invalid_id', character)
-          expect(response).to have_http_status(:success)
+          expect(response).to have_http_status(:not_found)
         end
       end
 
