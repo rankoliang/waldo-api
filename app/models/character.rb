@@ -1,3 +1,5 @@
+require_relative '../character_areas/character_area'
+
 class Character < ApplicationRecord
   belongs_to :level
 
@@ -6,5 +8,9 @@ class Character < ApplicationRecord
 
   def as_json(options = {})
     super(only: %i[id name], **options)
+  end
+
+  def area
+    @area ||= CharacterArea.for(shape: shape, coordinates: coordinates)
   end
 end
