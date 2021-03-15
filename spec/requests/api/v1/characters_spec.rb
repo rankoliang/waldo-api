@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Api::V1::Characters', type: :request do
   subject(:character) { FactoryBot.create('character') }
-  let(:level) { FactoryBot.create('level') }
+  let(:level) { character.level }
 
   describe 'GET /levels/:level_id/characters' do
     context 'when the level is found' do

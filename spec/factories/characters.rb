@@ -3,6 +3,6 @@ FactoryBot.define do
     name { 'Waldo' }
     shape { 'rect' }
     coordinates { '0,0,10,10' }
-    level
+    association :level
   end
 end
