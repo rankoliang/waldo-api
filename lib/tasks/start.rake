@@ -1,9 +1,6 @@
-# To use foreman, create a Procfile
-# in the project root with the following contents:
+# To use foreman, configure a .env file as follows:
 #
-# web: cd <waldo-frontend-dir> && npm start
-# api: bundle exec rails s -p 3001
-
+# CLIENT_PATH=/path/to/client
 task :start do
   exec 'foreman start -p 3000'
 end
