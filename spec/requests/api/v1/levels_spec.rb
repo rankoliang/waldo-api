@@ -38,7 +38,7 @@ RSpec.describe 'Levels', type: :request do
 
     context 'when the level is not found' do
       before :each do
-        get api_v1_level_path('unknown_id')
+        get api_v1_level_path('invalid_id')
       end
 
       it 'returns http not found' do
