@@ -7,12 +7,12 @@ class LevelsController < ApplicationController
   end
 
   def show
-    render json: @level
+    render json: { level: @level }
   end
 
   def find_level
     @level = Level.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render nothing: true, status: :not_found
+    render json: { error: 'The level was not found.' }, status: :not_found
   end
 end
