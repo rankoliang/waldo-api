@@ -29,10 +29,10 @@ RSpec.describe 'Levels', type: :request do
       end
 
       it 'returns a JSON object containing the title' do
-        data = JSON.parse(response.body)
-        level = data['level']
+        data = JSON.parse(response.body, symbolize_names: true)
+        level = data[:level]
 
-        expect(level).to include('title')
+        expect(level).to include(:title)
       end
     end
 
@@ -46,9 +46,9 @@ RSpec.describe 'Levels', type: :request do
       end
 
       it 'returns a JSON response containing an error' do
-        data = JSON.parse(response.body)
+        data = JSON.parse(response.body, symbolize_names: true)
 
-        expect(data).to include 'error' => 'The level was not found.'
+        expect(data).to include error: 'The level was not found.'
       end
     end
   end
