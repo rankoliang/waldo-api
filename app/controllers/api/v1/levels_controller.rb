@@ -1,4 +1,4 @@
-class LevelsController < ApplicationController
+class Api::V1::LevelsController < ApplicationController
   before_action :find_level, except: %i[index]
   def index
     @levels = Level.all

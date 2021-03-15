@@ -5,7 +5,7 @@ RSpec.describe 'Levels', type: :request do
 
   describe 'GET /levels' do
     before :each do
-      get levels_path
+      get api_v1_levels_path
     end
 
     it 'returns http success' do
@@ -21,7 +21,7 @@ RSpec.describe 'Levels', type: :request do
   describe 'GET /levels/:id' do
     context 'when the level is found' do
       before :each do
-        get level_path(level)
+        get api_v1_level_path(level)
       end
 
       it 'returns http success' do
@@ -38,7 +38,7 @@ RSpec.describe 'Levels', type: :request do
 
     context 'when the level is not found' do
       before :each do
-        get level_path('unknown_id')
+        get api_v1_level_path('unknown_id')
       end
 
       it 'returns http not found' do
