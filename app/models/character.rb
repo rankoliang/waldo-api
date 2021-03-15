@@ -3,4 +3,8 @@ class Character < ApplicationRecord
 
   validates_presence_of %i[name shape coordinates]
   validates_inclusion_of :shape, in: %w[poly rect circle]
+
+  def as_json(options = {})
+    super(only: [:id, :name], **options)
+  end
 end

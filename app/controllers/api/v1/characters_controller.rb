@@ -1,6 +1,8 @@
 class Api::V1::CharactersController < ApplicationController
   def index
     level = Level.includes(:characters).find(params[:level_id])
+
+    render json: level.characters
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The level was not found.' }, status: :not_found
   end
