@@ -10,6 +10,10 @@ class Character < ApplicationRecord
     super(only: %i[id name], **options)
   end
 
+  def found?(x:, y:)
+    area.contains?(x: x, y: y)
+  end
+
   def area
     @area ||= CharacterArea.for(shape: shape, coordinates: coordinates)
   end

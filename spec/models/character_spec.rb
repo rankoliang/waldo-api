@@ -21,4 +21,11 @@ RSpec.describe Character, type: :model do
       character.area
     end
   end
+
+  describe '#found?' do
+    it 'expects the area to call contains?' do
+      expect(character.area).to receive(:contains?)
+      character.found?(x: 0, y: 0)
+    end
+  end
 end
