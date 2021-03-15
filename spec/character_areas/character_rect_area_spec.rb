@@ -1,4 +1,4 @@
-require_relative '../app/character_areas/character_rect_area'
+require_relative '../../app/character_areas/character_rect_area'
 
 RSpec.describe CharacterRectArea do
   subject(:area) { described_class.new(coordinates) }

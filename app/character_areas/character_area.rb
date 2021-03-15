@@ -10,13 +10,3 @@ class CharacterArea
     end
   end
 end
-
-class CharacterRectArea
-  def initialize(coordinates)
-    coords = coordinates.split
-  end
-
-  private
-
-  attr_accessor :shape, :coordinates
-end
