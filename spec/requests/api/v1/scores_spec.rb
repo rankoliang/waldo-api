@@ -20,4 +20,20 @@ RSpec.describe 'Api::V1::Scores', type: :request do
       end
     end
   end
+
+  describe 'POST /levels/:id/leaderboard' do
+    it 'creates a score' do
+      expect do
+        post api_v1_level_leaderboard_index_path(level),
+             params: { score: { name: 'Anonymous', milliseconds: 1234 } }
+      end.to change { Score.count }.by(1)
+    end
+
+    it 'returns http accepted' do
+      post api_v1_level_leaderboard_index_path(level),
+           params: { score: { name: 'Anonymous', milliseconds: 1234 } }
+
+      expect(response).to have_http_status :accepted
+    end
+  end
 end
