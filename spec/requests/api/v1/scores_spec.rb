@@ -11,12 +11,20 @@ RSpec.describe 'Api::V1::Scores', type: :request do
     end
 
     context 'when there are scores' do
-      it 'returns an array of scores' do
-        level.scores.create(name: 'Anonymous', milliseconds: 4520)
+      it 'returns sorted array of scores' do
+        level.scores.create(name: 'Anonymous1', milliseconds: 4520)
+        level.scores.create(name: 'Anonymous2', milliseconds: 7621)
+        level.scores.create(name: 'Anonymous3', milliseconds: 2362)
+
         get api_v1_level_leaderboard_index_path(level)
 
         scores = JSON.parse(response.body)
-        expect(scores).to eq(['name' => 'Anonymous', 'milliseconds' => 4520])
+        expect(scores)
+          .to eq([
+                   { 'name' => 'Anonymous3', 'milliseconds' => 2362 },
+                   { 'name' => 'Anonymous1', 'milliseconds' => 4520 },
+                   { 'name' => 'Anonymous2', 'milliseconds' => 7621 }
+                 ])
       end
     end
   end

@@ -1,6 +1,6 @@
 class Api::V1::ScoresController < ApplicationController
   def index
-    scores = Score.where('level_id = ?', params[:level_id].to_i)
+    scores = Score.where('level_id = ?', params[:level_id].to_i).order('milliseconds ASC')
 
     render json: scores
   end
