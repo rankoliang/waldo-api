@@ -20,11 +20,11 @@ RSpec.describe 'Api::V1::Scores', type: :request do
 
         scores = JSON.parse(response.body)
         expect(scores)
-          .to eq({ 'title' => level.title, 'scores' => [
-                   { 'name' => 'Anonymous3', 'milliseconds' => 2362 },
-                   { 'name' => 'Anonymous1', 'milliseconds' => 4520 },
-                   { 'name' => 'Anonymous2', 'milliseconds' => 7621 }
-                 ] })
+          .to include('level', 'scores' => [
+                        { 'name' => 'Anonymous3', 'milliseconds' => 2362 },
+                        { 'name' => 'Anonymous1', 'milliseconds' => 4520 },
+                        { 'name' => 'Anonymous2', 'milliseconds' => 7621 }
+                      ])
       end
     end
   end

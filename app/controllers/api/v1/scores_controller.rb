@@ -3,7 +3,7 @@ class Api::V1::ScoresController < ApplicationController
     level = Level.includes(:scores).find(params[:level_id])
     scores = level.scores.order('milliseconds ASC')
 
-    render json: { title: level.title, scores: scores }
+    render json: { level: level, scores: scores }
   end
 
   def create
