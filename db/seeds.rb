@@ -7,7 +7,3 @@ department_store.image.attach(
 department_store.characters.create(name: 'Waldo', shape: 'rect', coordinates: '1133,282,1215,399')
 department_store.characters.create(name: 'Odlaw', shape: 'rect', coordinates: '521,1243,589,1357')
 department_store.characters.create(name: 'Wizard', shape: 'rect', coordinates: '1893,46,1957,130')
-
-50.times do
-  department_store.scores.create(name: 'Anonymous', milliseconds: rand(1000..100_000))
-end
