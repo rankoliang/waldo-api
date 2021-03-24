@@ -6,7 +6,7 @@ class Api::V1::ScoresController < ApplicationController
   end
 
   def create
-    score = Score.new(level_id: params[:level_id], **score_params)
+    score = Score.new(score_params)
 
     if score.save
       render :nothing, status: :accepted
@@ -18,6 +18,6 @@ class Api::V1::ScoresController < ApplicationController
   private
 
   def score_params
-    params.require(:score).permit(:name, :milliseconds)
+    params.permit(:level_id, :name, :milliseconds)
   end
 end
