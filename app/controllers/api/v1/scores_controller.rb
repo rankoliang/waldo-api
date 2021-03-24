@@ -12,7 +12,7 @@ class Api::V1::ScoresController < ApplicationController
     if score.save
       render :nothing, status: :accepted
     else
-      render json: { error: 'The score was not saved.' }, status: :bad_request
+      render json: { errors: score.errors }, status: :bad_request
     end
   end
 

@@ -10,4 +10,5 @@ RSpec.describe Score, type: :model do
   it { is_expected.to validate_numericality_of(:milliseconds).is_greater_than(0) }
 
   it { is_expected.to validate_length_of(:name).is_at_most(20) }
+  it { is_expected.to validate_length_of(:name).is_at_least(3) }
 end

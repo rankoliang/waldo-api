@@ -5,7 +5,7 @@ class Score < ApplicationRecord
 
   validates_numericality_of :milliseconds, greater_than: 0
 
-  validates_length_of :name, maximum: 20
+  validates_length_of :name, minimum: 3, maximum: 20
 
   def as_json(options = {})
     super(only: %i[name milliseconds], **options)
