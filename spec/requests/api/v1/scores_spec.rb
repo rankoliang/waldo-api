@@ -24,7 +24,7 @@ RSpec.describe 'Api::V1::Scores', type: :request do
                         { 'name' => 'Anonymous3', 'milliseconds' => 2362 },
                         { 'name' => 'Anonymous1', 'milliseconds' => 4520 },
                         { 'name' => 'Anonymous2', 'milliseconds' => 7621 }
-                      ])
+                      ], 'pages' => 1)
       end
     end
   end
