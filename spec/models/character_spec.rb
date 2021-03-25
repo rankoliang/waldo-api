@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative '../character_areas/character_area_spec'
 
 RSpec.describe Character, type: :model do
   subject(:character) { FactoryBot.create('character') }

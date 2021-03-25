@@ -12,19 +12,40 @@ RSpec.describe SearchArea, type: :model do
     it { is_expected.to validate_presence_of(field) }
   end
 
-  describe '#area' do
-    it 'calls SearchArea.for' do
-      area_factory = class_double('SearchArea').as_stubbed_const
+  describe '.for' do
+    subject(:search_area) do
+      FactoryBot.create('search_area', shape: shape, coordinates: coordinates)
+    end
 
-      expect(area_factory).to receive(:for).with(search_area)
+    let(:area) do
+      described_class.for(search_area)
+    end
 
-      search_area.area
+    context 'when the shape is a rect' do
+      let(:shape) { 'rect' }
+      let(:coordinates) { '0,0,10,10' }
+
+      it 'returns a RectSearchArea' do
+        expect(area).to be_kind_of(RectSearchArea)
+      end
     end
   end
 
   describe '#found?' do
+    let(:specific_area) { described_class.for(search_area) }
+
+    before(:each) do
+      allow(described_class).to receive(:for).and_return(specific_area)
+    end
+
+    it 'calls SearchArea.for' do
+      expect(described_class).to receive(:for).with(search_area)
+
+      search_area.found?(x: 0, y: 0)
+    end
+
     it 'expects the area to call contains?' do
-      expect(search_area.area).to receive(:contains?)
+      expect(specific_area).to receive(:contains?)
 
       search_area.found?(x: 0, y: 0)
     end

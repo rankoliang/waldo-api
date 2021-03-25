@@ -1,4 +1,4 @@
-require_relative '../search_areas/rect_search_area.rb'
+require_relative '../search_areas/rect_search_area'
 
 class SearchArea < ApplicationRecord
   belongs_to :character
@@ -8,11 +8,7 @@ class SearchArea < ApplicationRecord
   validates_inclusion_of :shape, in: %w[rect]
 
   def found?(x:, y:)
-    area.contains?(x: x, y: y)
-  end
-
-  def area
-    @area ||= SearchArea.for(self)
+    self.class.for(self).contains?(x: x, y: y)
   end
 
   def self.for(search_area)
