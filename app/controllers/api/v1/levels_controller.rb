@@ -2,7 +2,7 @@ class Api::V1::LevelsController < ApplicationController
   before_action :find_level, except: %i[index]
 
   def index
-    @levels = Level.all
+    @levels = Level.includes(image_attachment: :blob).all
 
     render json: @levels
   end
