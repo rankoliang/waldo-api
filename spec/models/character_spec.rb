@@ -6,6 +6,8 @@ RSpec.describe Character, type: :model do
 
   it { is_expected.to belong_to :level }
 
+  it { is_expected.to have_one_attached :avatar }
+
   %i[name shape coordinates].each do |field|
     it { is_expected.to validate_presence_of(field) }
   end
