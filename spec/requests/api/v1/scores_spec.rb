@@ -44,14 +44,25 @@ RSpec.describe 'Api::V1::Scores', type: :request do
       expect(response).to have_http_status :accepted
     end
 
+    it 'returns the position score position' do
+      level.scores.create(name: 'Anonymous', milliseconds: 1234)
+
+      post api_v1_level_leaderboard_index_path(level),
+           params: { name: 'Anonymous', milliseconds: 2345 }
+
+      body = JSON.parse(response.body)
+
+      expect(body['position']).to eq(2)
+    end
+
     context 'when the name is too short' do
       it 'returns an error' do
         post api_v1_level_leaderboard_index_path(level),
              params: { name: 'a', milliseconds: 1234 }
 
-        body = JSON.parse(response.body)['errors']
+        errors = JSON.parse(response.body)['errors']
 
-        expect(body).to include('name')
+        expect(errors).to include('name')
       end
     end
   end
