@@ -7,6 +7,10 @@ class SearchArea < ApplicationRecord
   validates_presence_of %i[shape coordinates]
   validates_inclusion_of :shape, in: %w[rect]
 
+  def as_json(options = {})
+    super(options).merge(character.as_json, search_area_id: id)
+  end
+
   def found?(x:, y:)
     self.class.for(self).contains?(x: x, y: y)
   end

@@ -15,16 +15,16 @@ RSpec.describe 'Api::V1::Characters', type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it 'returns an array of characters' do
-        characters = JSON.parse(response.body)
+      it 'returns an array of search_areas' do
+        search_areas = JSON.parse(response.body)
 
-        expect(characters.length).to eq 1
+        expect(search_areas.length).to eq 1
       end
 
       it 'returns characters with a name attribute' do
-        characters = JSON.parse(response.body, symbolize_names: true)
+        search_areas = JSON.parse(response.body, symbolize_names: true)
 
-        expect(characters.first).to include(:id, :name)
+        expect(search_areas.first).to include(:search_area_id, :name, :id, :avatar_path)
       end
     end
 
