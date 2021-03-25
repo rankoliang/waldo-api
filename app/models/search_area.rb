@@ -8,7 +8,10 @@ class SearchArea < ApplicationRecord
   validates_inclusion_of :shape, in: %w[rect]
 
   def as_json(options = {})
-    super(options).merge(character.as_json, search_area_id: id)
+    search_area_as_json = super(only: [:id], **options)
+    search_area_as_json['search_area_id'] = search_area_as_json.delete 'id'
+
+    character.as_json.merge(search_area_as_json)
   end
 
   def found?(x:, y:)
