@@ -10,4 +10,8 @@ class Score < ApplicationRecord
   def as_json(options = {})
     super(only: %i[name milliseconds], **options)
   end
+
+  def ranking
+    Score.where('milliseconds <= ? AND level_id = ?', milliseconds, level_id).count
+  end
 end

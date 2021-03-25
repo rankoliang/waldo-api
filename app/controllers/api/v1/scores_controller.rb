@@ -10,7 +10,7 @@ class Api::V1::ScoresController < ApplicationController
     score = Score.new(score_params)
 
     if score.save
-      render json: { position: Score.where('milliseconds <= ?', score.milliseconds).count }, status: :accepted
+      render json: { position: score.ranking }, status: :accepted
     else
       render json: { errors: score.errors }, status: :bad_request
     end
