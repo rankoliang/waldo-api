@@ -27,8 +27,8 @@ department_store
 
 department_store
   .characters.create(name: 'Odlaw', shape: 'rect', coordinates: '521,1243,589,1357')
-  .avatar.attach(attach_params('odlaw-avatar.jpg'))
+  .avatar.attach(attach_params('odlaw-avatar.png'))
 
 department_store
   .characters.create(name: 'Wizard', shape: 'rect', coordinates: '1893,46,1957,130')
-  .avatar.attach(attach_params('whitebeard-avatar.jpg'))
+  .avatar.attach(attach_params('whitebeard-avatar.png'))
