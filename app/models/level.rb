@@ -1,5 +1,6 @@
 class Level < ApplicationRecord
-  has_many :characters
+  has_many :search_areas
+  has_many :characters, through: :search_areas
   has_many :scores
   has_one_attached :image
 
