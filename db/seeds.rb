@@ -33,68 +33,52 @@ end
 
 # characters
 
-def waldo(shape: 'rect', coordinates:)
-  {
-    name: 'Waldo',
-    avatar: waldo_avatar,
-    shape: shape,
-    coordinates: coordinates
-  }
-end
+waldo = Character.create(name: 'Waldo')
+waldo.avatar.attach(waldo_avatar)
 
-def odlaw(shape: 'rect', coordinates:)
-  {
-    name: 'Odlaw',
-    avatar: odlaw_avatar,
-    shape: shape,
-    coordinates: coordinates
-  }
-end
+odlaw = Character.create(name: 'Odlaw')
+odlaw.avatar.attach(odlaw_avatar)
 
-def wizard(shape: 'rect', coordinates:)
-  {
-    name: 'Wizard',
-    avatar: wizard_avatar,
-    shape: shape,
-    coordinates: coordinates
-  }
-end
+wizard = Character.create(name: 'Wizard')
+wizard.avatar.attach(wizard_avatar)
+
+# levels
 
 levels = [
   {
     title: 'Department Store',
     image_filename: 'department-store.jpg',
-    characters: [
-      waldo(coordinates: '1133,282,1215,399'),
-      odlaw(coordinates: '521,1243,589,1357'),
-      wizard(coordinates: '1893,46,1957,130')
+    search_areas: [
+      { shape: 'rect', coordinates: '1133,282,1215,399', character: waldo },
+      { shape: 'rect', coordinates: '521,1243,589,1357', character: odlaw },
+      { shape: 'rect', coordinates: '1893,46,1957,130', character: wizard }
     ]
   },
   {
     title: 'The Unfriendly Giants',
     image_filename: 'the-unfriendly-giants.jpeg',
-    characters: [
-      waldo(coordinates: '601,1449,668,1557'),
-      odlaw(coordinates: '2056,1997,2124,2085'),
-      wizard(coordinates: '3386,1694,3438,1780')
+    search_areas: [
+      { shape: 'rect', coordinates: '601,1449,668,1557', character: waldo },
+      { shape: 'rect', coordinates: '2056,1997,2124,2085', character: odlaw },
+      { shape: 'rect', coordinates: '3386,1694,3438,1780', character: wizard }
     ]
   },
   {
     title: 'The Deep-Sea Divers',
     image_filename: 'the-deep-sea-divers.jpeg',
-    characters: [
-      waldo(coordinates: '2322,340,2390,446'),
-      odlaw(coordinates: '1038,410,1094,525'),
-      wizard(coordinates: '2752,260,2796,336')
+    search_areas: [
+      { shape: 'rect', coordinates: '2322,340,2390,446', character: waldo },
+      { shape: 'rect', coordinates: '1038,410,1094,525', character: odlaw },
+      { shape: 'rect', coordinates: '2752,260,2796,336', character: wizard }
     ]
   },
   {
     title: 'When the Stars come out',
     image_filename: 'when-the-stars-come-out.jpeg',
-    characters: [
-      waldo(coordinates: '2505,890,2566,995'),
-      odlaw(coordinates: '1950,1779,2018,1876'),
-      wizard(coordinates: '2449,1470,2530,1593')
+    search_areas: [
+      { shape: 'rect', coordinates: '2505,890,2566,995', character: waldo },
+      { shape: 'rect', coordinates: '1950,1779,2018,1876', character: odlaw },
+      { shape: 'rect', coordinates: '2449,1470,2530,1593', character: wizard }
     ]
   }
 ]
@@ -106,11 +90,9 @@ levels.each do |level_info|
     attach_params(level_info[:image_filename])
   )
 
-  next unless level_info[:characters]
+  next unless level_info[:search_areas]
 
-  level_info[:characters].each do |character|
-    level
-      .characters.create(character.slice(:name, :shape, :coordinates))
-      .avatar.attach(character[:avatar])
+  level_info[:search_areas].each do |search_area|
+    level.search_areas.create(search_area)
   end
 end
