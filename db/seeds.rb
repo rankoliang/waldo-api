@@ -96,7 +96,6 @@ levels = [
       odlaw(coordinates: '1950,1779,2018,1876'),
       wizard(coordinates: '2449,1470,2530,1593')
     ]
-
   }
 ]
 
