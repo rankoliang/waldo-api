@@ -2,6 +2,7 @@ require_relative '../character_areas/character_area'
 
 class Character < ApplicationRecord
   belongs_to :level
+  has_many :search_areas
 
   has_one_attached :avatar
 
