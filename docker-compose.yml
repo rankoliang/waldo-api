@@ -10,18 +10,22 @@ services:
     build: .
     command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - ./storage:/waldo-api/storage
-      - ./:/waldo-api
-      - bundle_path:/bundle
+      - ./:/waldo_api/
     ports:
       - "3001:3000"
     depends_on:
       - db
     environment:
-      BUNDLE_PATH: /bundle
       POSTGRES_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+  web:
+    build: ${CLIENT_PATH}
+    ports:
+      - "3000:3000"
+    volumes: 
+      - ${CLIENT_PATH}:/waldo_client
+    depends_on:
+      - api
 volumes:
   db:
-  bundle_path:

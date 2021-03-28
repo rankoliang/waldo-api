@@ -3,7 +3,7 @@ FROM ruby:2.7.2-buster
 RUN apt update && apt install -y postgresql-client && \
       bundle config set without production
 
-WORKDIR /waldo-api
+WORKDIR /waldo_api
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
