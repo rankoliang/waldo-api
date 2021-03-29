@@ -26,6 +26,8 @@ RSpec.describe 'Levels', type: :request do
 
   describe 'GET /levels/:id' do
     let(:start_time) { Time.current }
+    let(:body) { JSON.parse(response.body) }
+    let(:decrypted_data) { decrypt_and_verify(body['token']) }
 
     context 'when the level is found' do
       it 'returns http success' do
@@ -46,20 +48,16 @@ RSpec.describe 'Levels', type: :request do
         freeze_time do
           get api_v1_level_path(level)
 
-          jar = build_jar(request, cookies)
-
-          expect(jar.signed['start_time']).to eq(start_time)
+          expect(decrypted_data).to include('start_time' => start_time)
         end
       end
 
       it 'sets the searches to 0' do
         get api_v1_level_path(level)
 
-        jar = build_jar(request, cookies)
-
-        expect(JSON.parse(jar.signed['characters_found'])).to eq(
+        expect(decrypted_data['characters_found']).to eq(
           {
-            level.characters.first.id.to_s => false
+            level.characters.first.id => false
           }
         )
       end

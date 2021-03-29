@@ -4,7 +4,7 @@ RSpec.describe 'Api::V1::SearchAreas', type: :request do
   subject(:search_area) { FactoryBot.create('search_area') }
   let(:level) { search_area.level }
 
-  describe 'GET /levels/:level_id/search_areas/:id/search' do
+  xdescribe 'GET /levels/:level_id/search_areas/:id/search' do
     context 'when the level is found' do
       let(:start_time) { Time.new(2020, 1, 1, 12, 30, 0) }
 

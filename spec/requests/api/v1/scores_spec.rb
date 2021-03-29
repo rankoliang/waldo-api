@@ -29,7 +29,7 @@ RSpec.describe 'Api::V1::Scores', type: :request do
     end
   end
 
-  describe 'POST /levels/:id/leaderboard' do
+  xdescribe 'POST /levels/:id/leaderboard' do
     it 'creates a score' do
       expect do
         post api_v1_level_leaderboard_index_path(level),

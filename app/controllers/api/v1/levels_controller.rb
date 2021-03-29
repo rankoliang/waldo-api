@@ -12,10 +12,10 @@ class Api::V1::LevelsController < ApplicationController
 
     characters_found = @level.characters.map { |character| [character.id, false] }.to_h
 
-    cookies.signed['characters_found'] = JSON.generate(characters_found)
+    token = encrypt_and_sign({ 'start_time' => Time.current, 'characters_found' => characters_found })
 
     render json: @level.as_json(methods: %i[image_path])
-                       .merge({ characters: @level.search_areas })
+                       .merge({ characters: @level.search_areas, token: token })
   end
 
   private
