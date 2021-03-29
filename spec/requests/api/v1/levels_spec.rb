@@ -41,7 +41,7 @@ RSpec.describe 'Levels', type: :request do
         freeze_time do
           get api_v1_level_path(level)
 
-          jar = ActionDispatch::Cookies::CookieJar.build(request, cookies.to_hash)
+          jar = build_jar(request, cookies)
 
           expect(jar.signed['start_time']).to eq(start_time)
         end

@@ -9,6 +9,7 @@ require 'rspec/rails'
 require 'active_support/testing/time_helpers'
 require_relative 'support/factory_bot.rb'
 require_relative 'support/shoulda_matchers.rb'
+require_relative 'helpers.rb'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -66,4 +67,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ActiveSupport::Testing::TimeHelpers
+
+  config.include Helpers
 end
