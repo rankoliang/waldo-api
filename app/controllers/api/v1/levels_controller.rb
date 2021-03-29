@@ -21,7 +21,8 @@ class Api::V1::LevelsController < ApplicationController
   private
 
   def find_level
-    @level = Level.includes(:search_areas, :characters).find(params[:id])
+    @level = Level.includes(:search_areas, characters: [avatar_attachment: :blob])
+                  .find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The level was not found.' }, status: :not_found
   end
