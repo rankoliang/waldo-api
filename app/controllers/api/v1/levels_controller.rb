@@ -8,6 +8,9 @@ class Api::V1::LevelsController < ApplicationController
   end
 
   def show
+    cookies.signed['start_time'] = Time.current
+    p cookies.signed['start_time']
+
     render json: @level.as_json(root: true)
   end
 
