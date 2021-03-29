@@ -1,13 +1,5 @@
 #!/usr/bin/env ruby
-
-def dockerized_command(command, *args)
-  ['docker-compose run --rm api', command, *args, '2>/dev/null'].join(' ')
-end
-
 load File.expand_path('spring', __dir__)
-
-unless system(dockerized_command('rails', ARGV))
-  APP_PATH = File.expand_path('../config/application', __dir__)
-  require_relative '../config/boot'
-  require 'rails/commands'
-end
+APP_PATH = File.expand_path('../config/application', __dir__)
+require_relative '../config/boot'
+require 'rails/commands'

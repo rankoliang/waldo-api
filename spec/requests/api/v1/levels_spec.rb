@@ -1,7 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Levels', type: :request do
-  subject!(:level) { FactoryBot.create('level') }
+  subject!(:level) do
+    level = FactoryBot.create('level')
+    character = FactoryBot.create('character')
+    level.search_areas.create(**attributes_for(:search_area), character: character)
+
+    level
+  end
 
   describe 'GET /levels' do
     before :each do
@@ -31,8 +37,7 @@ RSpec.describe 'Levels', type: :request do
       it 'returns a JSON object containing the title' do
         get api_v1_level_path(level)
 
-        data = JSON.parse(response.body, symbolize_names: true)
-        level = data[:level]
+        level = JSON.parse(response.body, symbolize_names: true)
 
         expect(level).to include(:title)
       end
@@ -45,6 +50,18 @@ RSpec.describe 'Levels', type: :request do
 
           expect(jar.signed['start_time']).to eq(start_time)
         end
+      end
+
+      it 'sets the searches to 0' do
+        get api_v1_level_path(level)
+
+        jar = build_jar(request, cookies)
+
+        expect(JSON.parse(jar.signed['characters_found'])).to eq(
+          {
+            level.characters.first.id.to_s => false
+          }
+        )
       end
     end
 

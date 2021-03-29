@@ -9,15 +9,19 @@ class Api::V1::LevelsController < ApplicationController
 
   def show
     cookies.signed['start_time'] = Time.current
-    p cookies.signed['start_time']
 
-    render json: @level.as_json(root: true)
+    characters_found = @level.characters.map { |character| [character.id, false] }.to_h
+
+    cookies.signed['characters_found'] = JSON.generate(characters_found)
+
+    render json: @level.as_json(methods: %i[image_path])
+                       .merge({ characters: @level.search_areas })
   end
 
   private
 
   def find_level
-    @level = Level.find(params[:id])
+    @level = Level.includes(:search_areas, :characters).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The level was not found.' }, status: :not_found
   end
