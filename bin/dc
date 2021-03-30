@@ -1,3 +1,28 @@
 #!/usr/bin/env bash
 
-docker-compose --env-file .env --file docker/dev/docker-compose.yml $@ 
+dc () {
+  docker-compose --env-file dev.env -p waldo_app_dev --file docker/dev/docker-compose.yml $@ 
+}
+
+run () {
+  dc run --rm $@
+}
+
+if [ $1 ]; then
+  case $1 in
+    'run')
+      run "${@:2}"
+      ;;
+    'rails')
+      run api "$@"
+      ;;
+    'api' | 'web' | 'redis' | 'db')
+      run "$@"
+      ;;
+    *)
+      dc "$@"
+      ;;
+  esac
+else
+  docker-compose --help
+fi

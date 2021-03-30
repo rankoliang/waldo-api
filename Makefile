@@ -1,17 +1,25 @@
+build:
+	bin/dc build
+.PHONY: build
+
 run:
-	bin/dc run --rm api $(args)
+	bin/dc api $(args)
 .PHONY: run
 
 rails:
-	make run args="rails $(args)"
+	bin/dc api $(args)
 .PHONY: rails
 
 rebuild:
-	bin/dc down && bin/docker up -d --build
+	bin/dc down && bin/dc up -d --build
 .PHONY: rebuild
 
+restart:
+	bin/dc down && bin/dc up -d
+.PHONY: restart
+
 up:
-	bin/dc up -d --build
+	bin/dc up -d
 .PHONY: up
 
 down:
@@ -19,13 +27,13 @@ down:
 .PHONY: down
 
 rspec:
-	bin/dc run --rm api bundle exec rspec
+	bin/dc api bundle exec rspec
 .PHONY: rspec
 
-bash:
-	bin/dc run --rm api bash
-.PHONY: bash
+shell:
+	bin/dc api bash
+.PHONY: shell
 
 console:
-	bin/dc run --rm api rails console
+	bin/dc api rails console
 .PHONY: console
