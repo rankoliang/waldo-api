@@ -6,6 +6,13 @@ services:
       - db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
+  cache:
+    image: redis:6.2.1-alpine
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
   api:
     build: .
     command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -15,10 +22,12 @@ services:
       - "3001:3000"
     depends_on:
       - db
+      - cache
     environment:
       POSTGRES_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      REDIS_URL: redis://cache:6379/0
   web:
     build: ${CLIENT_PATH}
     ports:
@@ -29,3 +38,4 @@ services:
       - api
 volumes:
   db:
+  cache:
