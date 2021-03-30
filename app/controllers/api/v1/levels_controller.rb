@@ -2,7 +2,9 @@ class Api::V1::LevelsController < ApplicationController
   before_action :find_level, except: %i[index]
 
   def index
-    @levels = Level.includes(image_attachment: :blob).all
+    @levels = Rails.cache.fetch('levels') do
+      Level.includes(image_attachment: :blob).all.as_json
+    end
 
     render json: @levels
   end
@@ -19,8 +21,11 @@ class Api::V1::LevelsController < ApplicationController
   private
 
   def find_level
-    @level = Level.includes(:search_areas, characters: [avatar_attachment: :blob])
-                  .find(params[:id])
+    @level = Rails.cache.fetch("levels/#{params[:id]}") do
+      Level.includes(:search_areas,
+                     characters: [avatar_attachment: :blob])
+           .find(params[:id])
+    end
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The level was not found.' }, status: :not_found
   end

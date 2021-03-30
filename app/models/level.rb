@@ -4,7 +4,7 @@ class Level < ApplicationRecord
   has_many :scores
   has_one_attached :image
 
-  def as_json(options)
+  def as_json(options={})
     options = options.merge(only: %i[id title])
 
     if image.attached?
