@@ -6,6 +6,8 @@ class Api::V1::SearchAreasController < ApplicationController
 
     raise ArgumentError if params[:x].nil? || params[:y].nil?
 
+    return render json: { error: 'No token found' }, status: :bad_request unless params[:token]
+
     found = search_area.found?(x: params[:x].to_i, y: params[:y].to_i)
 
     token = update_token(params[:token]) do |data|

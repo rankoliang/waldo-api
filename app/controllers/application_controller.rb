@@ -21,5 +21,7 @@ class ApplicationController < ActionController::API
     yield(data)
 
     encrypt_and_sign(data)
+  rescue ActiveSupport::MessageEncryptor::InvalidMessage
+    render json: { error: 'The token is invalid.', status: :bad_request }
   end
 end

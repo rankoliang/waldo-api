@@ -59,6 +59,14 @@ RSpec.describe 'Api::V1::SearchAreas', type: :request do
             expect(response).to have_http_status(:bad_request)
           end
         end
+
+        context 'when no token is passed' do
+          it 'returns http bad request' do
+            get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5 }
+
+            expect(response).to have_http_status(:bad_request)
+          end
+        end
       end
 
       context 'when the character is not found' do
