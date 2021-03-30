@@ -29,17 +29,34 @@ RSpec.describe 'Api::V1::Scores', type: :request do
     end
   end
 
-  xdescribe 'POST /levels/:id/leaderboard' do
+  describe 'POST /levels/:id/leaderboard' do
+    let(:start_time) { Time.current }
+    let(:end_time) { start_time + 2.minutes }
+    let(:body) { JSON.parse(response.body) }
+    let(:decrypted_data) { decrypt_and_verify(body['token']) }
+    let(:time_elapsed) { ((start_time - end_time) * 1000).ceil }
+    let(:token) do
+      encrypt_and_sign({ 'start_time' => start_time,
+                         'end_time' => end_time })
+    end
+
     it 'creates a score' do
       expect do
         post api_v1_level_leaderboard_index_path(level),
-             params: { name: 'Anonymous', milliseconds: 1234 }
+             params: { name: 'Anonymous', token: token }
       end.to change { Score.count }.by(1)
+    end
+
+    it 'sets the correct number of milliseconds' do
+      post api_v1_level_leaderboard_index_path(level),
+           params: { name: 'Anonymous', token: token }
+
+      expect(Score.order('created_at DESC').first.milliseconds).to eq(2 * 60 * 1000)
     end
 
     it 'returns http accepted' do
       post api_v1_level_leaderboard_index_path(level),
-           params: { name: 'Anonymous', milliseconds: 1234 }
+           params: { name: 'Anonymous', token: token }
 
       expect(response).to have_http_status :accepted
     end
@@ -48,7 +65,7 @@ RSpec.describe 'Api::V1::Scores', type: :request do
       level.scores.create(name: 'Anonymous', milliseconds: 1234)
 
       post api_v1_level_leaderboard_index_path(level),
-           params: { name: 'Anonymous', milliseconds: 2345 }
+           params: { name: 'Anonymous', token: token }
 
       body = JSON.parse(response.body)
 
@@ -58,7 +75,7 @@ RSpec.describe 'Api::V1::Scores', type: :request do
     context 'when the name is too short' do
       it 'returns an error' do
         post api_v1_level_leaderboard_index_path(level),
-             params: { name: 'a', milliseconds: 1234 }
+             params: { name: 'a', token: token }
 
         errors = JSON.parse(response.body)['errors']
 
