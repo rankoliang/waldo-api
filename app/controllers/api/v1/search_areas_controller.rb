@@ -8,23 +8,16 @@ class Api::V1::SearchAreasController < ApplicationController
 
     found = search_area.found?(x: params[:x].to_i, y: params[:y].to_i)
 
-    characters_found do |cf|
-      cf[search_area.character_id.to_s] = true
-      cookies.signed['end_time'] = Time.current if cf.values.all?(true)
+    token = update_token(params[:token]) do |data|
+      characters_found = data['characters_found']
+      characters_found[search_area.character_id] = true
+      data['end_time'] = Time.current if characters_found.values.all?(true)
     end
 
-    render json: { found: found }
+    render json: { found: found, token: token }
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The character was not found' }, status: :not_found
   rescue ArgumentError
     render json: { error: 'Incorrect coordinate format' }, status: :bad_request
-  end
-
-  def characters_found
-    cf = JSON.parse(cookies.signed['characters_found'])
-
-    yield(cf)
-
-    cookies.signed['characters_found'] = JSON.generate(cf)
   end
 end

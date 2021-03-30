@@ -4,9 +4,12 @@ RSpec.describe 'Api::V1::SearchAreas', type: :request do
   subject(:search_area) { FactoryBot.create('search_area') }
   let(:level) { search_area.level }
 
-  xdescribe 'GET /levels/:level_id/search_areas/:id/search' do
+  describe 'GET /levels/:level_id/search_areas/:id/search' do
     context 'when the level is found' do
       let(:start_time) { Time.new(2020, 1, 1, 12, 30, 0) }
+      let(:body) { JSON.parse(response.body) }
+      let(:decrypted_data) { decrypt_and_verify(body['token']) }
+      let(:token) { encrypt_and_sign({ 'start_time' => start_time, 'characters_found' => { search_area.character_id => false } }) }
 
       before :each do
         travel_to start_time do
@@ -16,13 +19,13 @@ RSpec.describe 'Api::V1::SearchAreas', type: :request do
 
       context 'when the character is found' do
         it 'returns http success' do
-          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5 }
+          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5, token: token }
 
           expect(response).to have_http_status(:success)
         end
 
         it 'returns whether the character is found' do
-          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5 }
+          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5, token: token }
 
           data = JSON.parse(response.body, symbolize_names: true)
 
@@ -30,26 +33,22 @@ RSpec.describe 'Api::V1::SearchAreas', type: :request do
         end
 
         it 'sets the the character_found key to true' do
-          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5 }
+          get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5, token: token }
 
-          jar = build_jar(request, cookies)
+          characters_found = decrypted_data['characters_found']
 
-          characters_found = JSON.parse(jar.signed['characters_found'])
-
-          expect(characters_found).to include(search_area.character_id.to_s => true)
+          expect(characters_found).to include(search_area.character_id => true)
         end
 
         context 'when it is the last character to be found' do
           it 'sets the end time cookie' do
-            end_time = start_time + 2.minutes
+            end_time = start_time + 60.seconds
 
-            travel_to end_time do
-              get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5 }
+            allow(Time).to receive(:current).and_return(end_time)
 
-              jar = build_jar(request, cookies)
+            get api_v1_level_search_path(level, search_area), params: { x: 5, y: 5, token: token }
 
-              expect(jar.signed['end_time']).to eq(end_time)
-            end
+            expect(decrypted_data['end_time']).to eq(end_time)
           end
         end
 
