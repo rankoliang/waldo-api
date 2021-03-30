@@ -9,15 +9,20 @@ class Api::V1::ScoresController < ApplicationController
   end
 
   def create
-    return render json: { error: 'No token found' }, status: :bad_request unless params[:token]
+    return render json: { errors: { token: 'No token found' } }, status: :bad_request unless params[:token]
 
     if end_time - Time.current > 20.minutes
       return render json: { errors: 'Request timed out.' }, status: :request_timeout
     end
 
+    if Rails.cache.read("token/#{params[:token]}")
+      return render json: { errors: { token: 'Token has already been used! Game invalid.' } }, status: :bad_request
+    end
+
     score = Score.new(milliseconds: milliseconds_elapsed, **score_params)
 
     if score.save
+      Rails.cache.write("token/#{params[:token]}", true, expires_in: 20.minutes)
       render json: { position: score.ranking }, status: :accepted
     else
       render json: { errors: score.errors }, status: :bad_request
