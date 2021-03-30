@@ -8,8 +8,6 @@ class Api::V1::LevelsController < ApplicationController
   end
 
   def show
-    cookies.signed['start_time'] = Time.current
-
     characters_found = @level.characters.map { |character| [character.id, false] }.to_h
 
     token = encrypt_and_sign({ 'start_time' => Time.current, 'characters_found' => characters_found })
