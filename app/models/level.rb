@@ -4,10 +4,10 @@ class Level < ApplicationRecord
   has_many :scores
   has_one_attached :image
 
-  def as_json(options={})
+  def as_json(options = {})
     options = options.merge(only: %i[id title])
 
-    if image.attached?
+    if cached_image_attached?
       super(methods: [:image_path], **options)
     else
       super(**options)
@@ -15,6 +15,14 @@ class Level < ApplicationRecord
   end
 
   def image_path
-    rails_blob_path(image, only_path: true) if image.attached?
+    Rails.cache.fetch([self, 'image_path']) do
+      rails_blob_path(image, only_path: true) if cached_image_attached?
+    end
+  end
+
+  def cached_image_attached?
+    Rails.cache.fetch([self, 'image_attached?']) do
+      image.attached?
+    end
   end
 end

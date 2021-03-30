@@ -14,7 +14,7 @@ class Api::V1::LevelsController < ApplicationController
 
     token = encrypt_and_sign({ 'start_time' => Time.current, 'characters_found' => characters_found })
 
-    render json: @level.as_json(methods: %i[image_path])
+    render json: @level.as_json
                        .merge({ characters: @level.search_areas, token: token })
   end
 
@@ -23,7 +23,8 @@ class Api::V1::LevelsController < ApplicationController
   def find_level
     @level = Rails.cache.fetch("levels/#{params[:id]}") do
       Level.includes(:search_areas,
-                     characters: [avatar_attachment: :blob])
+                     characters: [avatar_attachment: :blob],
+                     image_attachment: :blob)
            .find(params[:id])
     end
   rescue ActiveRecord::RecordNotFound
