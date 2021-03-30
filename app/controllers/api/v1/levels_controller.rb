@@ -21,12 +21,7 @@ class Api::V1::LevelsController < ApplicationController
   private
 
   def find_level
-    @level = Rails.cache.fetch("levels/#{params[:id]}") do
-      Level.includes(:search_areas,
-                     characters: [avatar_attachment: :blob],
-                     image_attachment: :blob)
-           .find(params[:id])
-    end
+    @level = Level.cached(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'The level was not found.' }, status: :not_found
   end

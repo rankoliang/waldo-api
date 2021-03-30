@@ -25,4 +25,13 @@ class Level < ApplicationRecord
       image.attached?
     end
   end
+
+  def self.cached(id)
+    Rails.cache.fetch("levels/#{id}") do
+      Level.includes(:search_areas,
+                     characters: [avatar_attachment: :blob],
+                     image_attachment: :blob)
+           .find(id)
+    end
+  end
 end
