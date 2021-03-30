@@ -11,6 +11,10 @@ class Api::V1::ScoresController < ApplicationController
   def create
     return render json: { error: 'No token found' }, status: :bad_request unless params[:token]
 
+    if end_time - Time.current > 20.minutes
+      return render json: { errors: 'Request timed out.' }, status: :request_timeout
+    end
+
     score = Score.new(milliseconds: milliseconds_elapsed, **score_params)
 
     if score.save

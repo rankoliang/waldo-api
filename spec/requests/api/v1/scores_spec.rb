@@ -82,5 +82,16 @@ RSpec.describe 'Api::V1::Scores', type: :request do
         expect(errors).to include('name')
       end
     end
+
+    context 'when more than 20 minutes have elapsed since the end time' do
+      let(:end_time) { start_time + 21.minutes }
+
+      it 'returns http accepted' do
+        post api_v1_level_leaderboard_index_path(level),
+             params: { name: 'Anonymous', token: token }
+
+        expect(response).to have_http_status :request_timeout
+      end
+    end
   end
 end
