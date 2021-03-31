@@ -3,10 +3,6 @@ services:
   cache:
     image: redis:6.2.1-alpine
     command: redis-server
-    ports:
-      - '6379:6379'
-    volumes:
-      - cache:/data
   api:
     build: 
       context: ${API_PATH}
@@ -14,8 +10,6 @@ services:
     env_file:
       - ${API_PATH}/prod.env
     command: sh -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
-    ports:
-      - "3000:3000"
     depends_on:
       - cache
     environment:
@@ -29,5 +23,3 @@ services:
       - "80:80"
     environment:
       NODE_ENV: 'production'
-volumes:
-  cache:

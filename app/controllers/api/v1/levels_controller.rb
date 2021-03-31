@@ -2,7 +2,7 @@ class Api::V1::LevelsController < ApplicationController
   before_action :find_level, except: %i[index]
 
   def index
-    @levels = Rails.cache.fetch('levels') do
+    @levels = Rails.cache.fetch('levels', expires_in: ActiveStorage.service_urls_expire_in) do
       Level.includes(image_attachment: :blob).all.as_json
     end
 

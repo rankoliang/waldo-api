@@ -15,7 +15,7 @@ class Level < ApplicationRecord
   end
 
   def image_path
-    Rails.cache.fetch([self, 'image_path']) do
+    Rails.cache.fetch([self, 'image_path'], expires_in: ActiveStorage.service_urls_expire_in) do
       rails_blob_path(image, only_path: true) if cached_image_attached?
     end
   end
@@ -27,7 +27,7 @@ class Level < ApplicationRecord
   end
 
   def self.cached(id)
-    Rails.cache.fetch("levels/#{id}") do
+    Rails.cache.fetch(['level', id], expires_in: ActiveStorage.service_urls_expire_in) do
       Level.includes(:search_areas,
                      characters: [avatar_attachment: :blob],
                      image_attachment: :blob)
