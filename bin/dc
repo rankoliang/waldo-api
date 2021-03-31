@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
 
+APP_ENV=dev
+
+while getopts ":p" arg; do
+  case $arg in
+    p)
+      APP_ENV=prod
+      ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
 dc () {
-  docker-compose --env-file dev.env -p waldo_app_dev --file docker/dev/docker-compose.yml $@ 
+  docker-compose \
+    --env-file $APP_ENV.env \
+    -p waldo_app_$APP_ENV \
+    --file docker/$APP_ENV/docker-compose.yml \
+    $@ 
 }
 
 run () {
@@ -10,13 +26,15 @@ run () {
 
 if [ $1 ]; then
   case $1 in
-    'run')
-      run "${@:2}"
+    run)
+      shift
+      run "$@"
       ;;
-    'rails')
-      run api "$@"
+    rails)
+      shift
+      run api bin/rails "$@"
       ;;
-    'api' | 'web' | 'redis' | 'db')
+    api | web | redis | db)
       run "$@"
       ;;
     *)

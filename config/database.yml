@@ -85,5 +85,3 @@ test:
 production:
   <<: *default
   database: waldo_api_production
-  username: waldo_api
-  password: <%= ENV['WALDO_API_DATABASE_PASSWORD'] %>

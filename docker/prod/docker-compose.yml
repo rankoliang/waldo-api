@@ -1,11 +1,5 @@
 version: "3.9"
 services:
-  db:
-    image: postgres
-    env_file:
-      - ${API_PATH}/dev.env
-    volumes:
-      - db:/var/lib/postgresql/data
   cache:
     image: redis:6.2.1-alpine
     command: redis-server
@@ -16,30 +10,24 @@ services:
   api:
     build: 
       context: ${API_PATH}
-      dockerfile: ./docker/dev/Dockerfile
+      dockerfile: ./docker/prod/Dockerfile
     env_file:
-      - ${API_PATH}/dev.env
+      - ${API_PATH}/prod.env
     command: sh -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - ${API_PATH}:/waldo_api/
     ports:
-      - "3001:3000"
+      - "3000:3000"
     depends_on:
-      - db
       - cache
     environment:
-      POSTGRES_HOST: db
+      RAILS_ENV: production
       REDIS_URL: redis://cache:6379/0
   web:
     build: 
       context: ${CLIENT_PATH}
-      dockerfile: ./docker/dev/Dockerfile
+      dockerfile: ./docker/prod/Dockerfile
     ports:
-      - "3000:3000"
-    volumes: 
-      - ${CLIENT_PATH}:/waldo_client
-    depends_on:
-      - api
+      - "80:80"
+    environment:
+      NODE_ENV: 'production'
 volumes:
-  db:
   cache:
