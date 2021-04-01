@@ -25,6 +25,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'will_paginate', '~> 3.3'
 
+# use aws in active storage
+gem 'aws-sdk-s3', require: false
+
 group :development, :test do
   # Use rspec as the testing framework
   gem 'rspec-rails', '~> 5.0'
@@ -44,11 +47,6 @@ group :test do
   # Replacement for fixtures
   gem 'factory_bot_rails', '~> 6.1'
   gem 'shoulda-matchers', '~> 4.5'
-end
-
-group :production do
-  # use aws in active storage
-  gem 'aws-sdk-s3', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
