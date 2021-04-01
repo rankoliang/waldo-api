@@ -21,5 +21,7 @@ services:
       dockerfile: ./docker/prod/Dockerfile
     ports:
       - "80:80"
+    links:
+      - api
     environment:
       NODE_ENV: 'production'
