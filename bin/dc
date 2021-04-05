@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 APP_ENV=dev
+COMPOSE='/usr/local/bin/docker-compose'
 
 while getopts ":p" arg; do
   case $arg in
@@ -13,7 +14,7 @@ done
 shift $((OPTIND - 1))
 
 dc () {
-  docker-compose \
+  $COMPOSE \
     --env-file $APP_ENV.env \
     -p waldo_app_$APP_ENV \
     --file docker/$APP_ENV/docker-compose.yml \

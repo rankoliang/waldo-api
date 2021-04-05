@@ -15,13 +15,45 @@ services:
     environment:
       RAILS_ENV: production
       REDIS_URL: redis://cache:6379/0
-  web:
+  build:
     build: 
       context: ${CLIENT_PATH}
       dockerfile: ./docker/prod/Dockerfile
-    ports:
-      - "80:80"
-    links:
-      - api
+    volumes:
+      - web-root:/app/build
     environment:
       NODE_ENV: 'production'
+  web:
+    image: nginx:1.19.9-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - web-root:/var/www/html
+      - ${CLIENT_PATH}/nginx:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs
+    depends_on:
+      - build
+      - api
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - web
+    command: certonly --webroot --webroot-path=/var/www/html --email ${EMAIL} --agree-tos --no-eff-email --force-renewal -d waldo.rankoliang.com
+volumes:
+  web-root:
+  certbot-etc:
+  certbot-var:
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${CLIENT_PATH}/dhparam
+      o: bind
