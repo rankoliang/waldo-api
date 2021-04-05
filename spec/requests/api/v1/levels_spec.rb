@@ -44,7 +44,7 @@ RSpec.describe 'Levels', type: :request do
         expect(level).to include(:title)
       end
 
-      it 'sets the start time cookie' do
+      it 'sets the start time token' do
         freeze_time do
           get api_v1_level_path(level)
 

@@ -6,7 +6,7 @@ module Helpers
   def crypt
     return @crypt if @crypt
 
-    key = Rails.application.secrets.secret_key_base[0..31]
+    key = Rails.application.credentials.secret_key_base[0..31]
     @crypt ||= ActiveSupport::MessageEncryptor.new(key)
   end
 
