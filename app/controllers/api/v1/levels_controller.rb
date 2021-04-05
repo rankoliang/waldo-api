@@ -3,7 +3,7 @@ class Api::V1::LevelsController < ApplicationController
 
   def index
     @levels = Rails.cache.fetch('levels', expires_in: ActiveStorage.service_urls_expire_in) do
-      Level.includes(image_attachment: :blob).all.as_json
+      Level.includes(image_attachment: :blob).all.as_json(thumbnail: true)
     end
 
     render json: @levels

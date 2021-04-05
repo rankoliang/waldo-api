@@ -6,7 +6,7 @@ class Api::V1::ScoresController < ApplicationController
 
     scores = level.scores.paginate(page: params[:page] || 1, per_page: 20).order('milliseconds ASC')
 
-    render json: { level: level, scores: scores, pages: (level.scores.count / 20) + 1 }
+    render json: { level: level.as_json(thumbnail: true), scores: scores, pages: (level.scores.count / 20) + 1 }
   end
 
   def create

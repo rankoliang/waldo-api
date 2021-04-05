@@ -7,5 +7,5 @@ class ApplicationRecord < ActiveRecord::Base
     @url_helpers ||= Rails.application.routes.url_helpers
   end
 
-  delegate :rails_blob_path, to: :url_helpers
+  delegate :rails_blob_path, :rails_representation_url, to: :url_helpers
 end
