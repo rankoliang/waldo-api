@@ -6,7 +6,8 @@ RUN apk --update --no-cache add build-base \
       linux-headers \
       tzdata \
       postgresql-dev \
-      postgresql-client
+      postgresql-client \
+      vips
 
 WORKDIR /waldo_api
 

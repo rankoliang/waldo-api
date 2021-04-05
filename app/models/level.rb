@@ -26,7 +26,7 @@ class Level < ApplicationRecord
 
   def image_thumbnail_path
     Rails.cache.fetch([self, 'image_thumbnail_path'], expires_in: ActiveStorage.service_urls_expire_in) do
-      thumbnail = image.variant(gravity: 'center', crop: '800x600+0+0').processed
+      thumbnail = image.variant(gravity: ['centre', 800, 600]).processed
 
       rails_representation_url(thumbnail, only_path: true)
     end
