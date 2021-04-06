@@ -1,24 +1,35 @@
-# README
+# Where's Waldo API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the api for the Where's Waldo app hosted at https://waldo.rankoliang.com/.
 
-Things you may want to cover:
+The frontend repository for this application can be found at https://github.com/rankoliang/waldo-frontend/.
 
-* Ruby version
+## How to Play
 
-* System dependencies
+- Select a level from the homepage.
+- Click the image where you see one of the characters.
+- Select the character from the dropdown menu
+- Repeat until you have found all of the characters for a level.
+- Submit your score!
 
-* Configuration
+## Setup
 
-* Database creation
+You will need to clone the frontend repository linked again [here](https://github.com/rankoliang/waldo-frontend/).
+Also, set up the environment variables at `dev.env` according to the variables in `dev.env.sample` in the repository
+you are running `docker-compose` from.
 
-* Database initialization
+This application uses docker to run.
 
-* How to run the test suite
+To set up your development environment, you must have
+[docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) installed.
 
-* Services (job queues, cache servers, search engines, etc.)
+There is a `bin/dc` script to run docker-compose with the appropriate configurations depending on your environment.
+There is also a Makefile available where you can run some preselected commands.
 
-* Deployment instructions
+With a `-p` flag, you will run the commands for production and without it, you will run the commands in development mode.
 
-* ...
+To build the docker containers, run `make build` or `bin/dc build`.
+
+To run the docker containers, run `make up` or `bin/dc up -d`.
+
+See the respective files for more options.
