@@ -1,8 +1,10 @@
 # Where's Waldo API
 
-This is the api for the Where's Waldo app hosted at https://waldo.rankoliang.com/.
+This is the api for the Where's Waldo app hosted at https://waldo.rankoliang.com/, deployed on an AWS EC2 instance.
 
 The frontend repository for this application can be found at https://github.com/rankoliang/waldo-frontend/.
+
+Techonologies used: react, rails, nginx, redis, AWS.
 
 ## How to Play
 
@@ -27,6 +29,9 @@ There is a `bin/dc` script to run docker-compose with the appropriate configurat
 There is also a Makefile available where you can run some preselected commands.
 
 With a `-p` flag, you will run the commands for production and without it, you will run the commands in development mode.
+
+**WARNING** You will have to change the domain on nginx and the certbot script to run this in production. Certbot may
+need some additional setup before this repo is ready to be deployed for production.
 
 To build the docker containers, run `make build` or `bin/dc build`.
 
