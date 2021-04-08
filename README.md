@@ -17,8 +17,19 @@ Techonologies used: react, rails, nginx, redis, docker, AWS.
 ## Setup
 
 You will need to clone the frontend repository linked again [here](https://github.com/rankoliang/waldo-frontend/).
-Also, set up the environment variables at `dev.env` according to the variables in `dev.env.sample` in the repository
+
+Set up the environment variables at `dev.env` according to the variables in `dev.env.sample` in the repository
 you are running `docker-compose` from.
+
+You will also need to delete the `config/credentials.yml.enc` file in the api repository and regenerate your master
+key by running the commands
+```
+bin/dc api sh
+```
+to enter the shell of the backend container, followed by
+```
+EDITOR="vi" rails credentials:edit
+```
 
 This application uses docker to run.
 
